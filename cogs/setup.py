@@ -84,11 +84,11 @@ class Setup(commands.Cog, name='Setup'):
         reaction = get(message.reactions, emoji=emoji.name)
         embed = message.embeds[0]
         
-        with connect('data.db') as conn:
-            c = conn.cursor()
-            c.execute('SELECT Verif FROM setup WHERE Guild_ID=?', (guild.id,))
-            role = get(guild.roles, id=c.fetchone()[0])
         if emoji.name == '✅':
+            with connect('data.db') as conn:
+                c = conn.cursor()
+                c.execute('SELECT Verif FROM setup WHERE Guild_ID=?', (guild.id,))
+                role = get(guild.roles, id=c.fetchone()[0])
             if not role in member.roles:
                 await member.add_roles(role)
             return

@@ -24,7 +24,7 @@ class Logs(commands.Cog):
                 c.execute("INSERT INTO logs (ID, State) VALUES (?, ?)", (guild_id, 0))
                 conn.commit()
                 return False
-            return int(entry[0]) if entry else False
+            return entry[0] if entry is not None else False
 
     @staticmethod
     def check_logs(guild, logs=False):
