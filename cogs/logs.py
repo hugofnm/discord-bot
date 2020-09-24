@@ -24,7 +24,7 @@ class Logs(commands.Cog):
                 c.execute("INSERT INTO logs (ID, State) VALUES (?, ?)", (guild_id, 0))
                 conn.commit()
                 return False
-            return int(entry[0])
+            return int(entry[0]) if entry else False
 
     @staticmethod
     def check_logs(guild, logs=False):
@@ -86,7 +86,10 @@ class Logs(commands.Cog):
         if not Logs.check_logs(ctx.guild, True if cmd=='logs' else False):
             return
 
-        channel = get(ctx.guild.text_channels, id=Logs.get_data(ctx.guild.id, True))
+        if Logs.get_data(ctx.guild.id, True):
+            channel = get(ctx.guild.text_channels, id=Logs.get_data(ctx.guild.id, True))
+        else:
+            channel = get(ctx.guild.text_channels, name='logs')
         state = 'a activé' if state else 'a désactivé'
         
         cmd_args = ctx.message.content[len(cmd)+1:].split()

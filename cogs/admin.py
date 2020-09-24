@@ -88,6 +88,7 @@ class Moderation(commands.Cog, name='Moderation'):
             entry = c.fetchone()
             warns = (''.join(entry) if entry else '') + f'{now} - {reason}\n'
             if entry is None:
+                c.execute(f'CREATE TABLE IF NOT EXISTS "{ctx.guild.id}" (User_ID INTEGER, Warns TEXT, Mute INTEGER, Verif INTEGER)')
                 c.execute(f'INSERT INTO "{ctx.guild.id}" (User_ID, Warns) VALUES (?, ?)', (member.id, warns))
             else:
                 c.execute(f'UPDATE "{ctx.guild.id}" SET Warns=? WHERE User_ID=?', (warns, member.id))
