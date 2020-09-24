@@ -1,11 +1,11 @@
 # Liens / Links
 Vous voulez ce bot sur votre serveur ? [Cliquez sur ce lien !](https://discord.com/api/oauth2/authorize?client_id=713781013830041640&permissions=334622423&scope=bot)<br>
-You want this bot on your server ? [Click this link](https://discord.com/api/oauth2/authorize?client_id=713781013830041640&permissions=334622423&scope=bot)<br>
+You want this bot on your server ? [Click this link!](https://discord.com/api/oauth2/authorize?client_id=713781013830041640&permissions=334622423&scope=bot)<br>
 
 Vous avez des idées, des recommendations ou des problèmes avec le bot ? [Rejoignez le discord !](https://discord.gg/H68KXcm)<br>
 You have any ideas, recommendations or problems with this bot ? [Join the discord!](https://discord.gg/H68KXcm)<br>
 
-Vous voulez juste utiliser le code pour votre bot, [regardez la documentation.](https://github.com/MrSpaar/discord-bot/wiki)<br>
+Si vous voulez juste utiliser le code pour votre bot, vous pouvez [regardez la documentation.](https://github.com/MrSpaar/discord-bot/wiki)<br>
 If you only want to use the code, [you can look at the documentation.](https://github.com/MrSpaar/discord-bot/wiki)<br>
 
 
