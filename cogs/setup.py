@@ -154,8 +154,8 @@ class Setup(commands.Cog, name='Setup'):
     async def on_guild_join(self, guild):
         with connect('data.db') as conn:
             c = conn.cursor()
-            c.execute("INSERT INTO logs (ID, State) VALUES (?, ?)", (guild.id, 0))
             c.execute(f'CREATE TABLE IF NOT EXISTS "{guild.id}" (User_ID INTEGER, Warns TEXT, Mute INTEGER, Verif INTEGER, Temp INTEGER)')
+            c.execute("INSERT INTO logs (ID, State) VALUES (?, ?)", (guild.id, 0))
             conn.commit()
         channel = await self.bot.fetch_channel(747480897426817095)
         embed = (Embed(color=0xf1c40f)
@@ -164,6 +164,23 @@ class Setup(commands.Cog, name='Setup'):
                  .add_field(name='🗝️ Owner', value=guild.owner)
                  .set_author(name=f'''J'ai rejoint "{guild.name}"''', icon_url=guild.icon_url))
         await channel.send(embed=embed)
+
+    @commands.command(hidden=True)
+    @commands.is_owner()
+    async def update_db(self, ctx):
+        with connect('data.db') as conn:
+            c = conn.cursor()
+            for guild in self.bot.guilds:
+                c.execute(f'CREATE TABLE IF NOT EXISTS "{guild.id}" (User_ID INTEGER, Warns TEXT, Mute INTEGER, Verif INTEGER, Temp INTEGER)')
+                c.execute("SELECT * FROM logs WHERE ID=?", (guild.id,))
+                if c.fetchone() is None:
+                    c.execute("INSERT INTO logs (ID, State) VALUES (?, ?)", (guild.id, 0))
+                c.execute("SELECT * FROM setup WHERE Guild_ID=?", (guild.id,))
+                if c.fetchone() is None:
+                    c.execute("INSERT INTO setup (Guild_ID, Verif, Mute, Logs, Temp) VALUES (?, ?, ?, ?, ?)", (guild.id, None, None, None, None))
+            conn.commit()
+        await ctx.message.delete()
+        await ctx.send('Base de donnée mise à jour', delete_after=5)
 
 
 def setup(bot):
