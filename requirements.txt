@@ -1,0 +1,7 @@
+discord.py
+wheel
+ffmpeg
+youtube_dl
+PyNaCl
+requests
+pygithub
