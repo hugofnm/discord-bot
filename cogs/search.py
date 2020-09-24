@@ -11,7 +11,7 @@ from re import findall
 
 class Search(commands.Cog, name='Recherche'):
     """
-    Utilisable par tout le monde et contient toutes les commandes de recherche.
+    Module de recherche (animes, wikipedia, github, discord).
     """
     def __init__(self, bot):
         self.bot = bot

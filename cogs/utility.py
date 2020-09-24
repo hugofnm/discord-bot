@@ -7,30 +7,29 @@ from sqlite3 import connect
 from os import environ
 
 
-class Chat(commands.Cog, name='Chat'):
+class Utility(commands.Cog, name='Utilitaire'):
     """
-    Utilisable par tout le monde et rassemble toutes les commandes un peu random.
+    Module rassemblant toutes les commandes utilitaires.
     """
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(brief='!help [categorie]', description='Afficher ce message')
+    @commands.command(brief='!help [categorie]', description='Afficher ce message', aliases=['ahelp'])
     async def help(self, ctx, category: str = None):
-        embed = Embed(color=0x3498db)
-        embed.title = '📋 Liste des catégories :' if not category else f'ℹ️ A propos de {category} :'
+        is_admin = ctx.author.guild_permissions.manage_messages
+        if (category if category else False) in ['Moderation', 'Setup'] or ('a' in ctx.invoked_with and not is_admin):
+            raise commands.errors.MissingPermissions
+        member_cogs = [self.bot.get_cog(cog) for cog in self.bot.cogs if cog not in ['Moderation', 'Setup', 'Logs']]
+        admin_cogs = [self.bot.get_cog(cog) for cog in ['Moderation', 'Setup']]
+        title = "📋 Menu d'aide" if not category else f'ℹ️ A propos de {category} :'
+        embed = Embed(title=title, description="Écris `!help [catégorie]` pour plus d'infos.", color=0x3498db)
         await ctx.message.delete()
         if not category:
-            for cat in self.bot.cogs:
-                if cat in ['Test', 'Logs']:
-                    pass
-                else:
-                    cog = self.bot.get_cog(cat)
-                    embed.add_field(name=cat, value=f"{cog.description}\nÉcris `!help {cat}` pour plus d'infos.", inline=False)
+            for cog in (admin_cogs if is_admin and 'a' in ctx.invoked_with else member_cogs):
+                embed.add_field(name=cog.qualified_name, value=cog.description)
         else:
             for cmd in self.bot.get_cog(category.capitalize()).get_commands():
-                if cmd.hidden:
-                    pass
-                else:
+                if not cmd.hidden:
                     embed.add_field(name=f"!{cmd.name}", value=f"{cmd.description} (`{cmd.brief}`)", inline=False)
         await ctx.send(embed=embed)
 
@@ -52,4 +51,4 @@ class Chat(commands.Cog, name='Chat'):
 
 
 def setup(bot):
-    bot.add_cog(Chat(bot))
+    bot.add_cog(Utility(bot))

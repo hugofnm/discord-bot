@@ -9,7 +9,7 @@ from datetime import datetime
 
 class Moderation(commands.Cog, name='Moderation'):
     """
-    Commandes réservées aux admins et aux modos.
+    Module rassemblant les commandes de modération.
     """
     def __init__(self, bot):
         self.bot = bot

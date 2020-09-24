@@ -9,7 +9,7 @@ import requests
 
 class Music(commands.Cog, name='Musique'):
     """
-    Utilisable par tout le monde et permet d'écouter des vidéos.
+    Module permettant d'écouter des vidéos.
     """
     YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist':'True'}
     FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}

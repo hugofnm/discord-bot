@@ -10,7 +10,7 @@ from sqlite3 import connect
 
 class Weather(commands.Cog, name='Météo'):
     """
-    Utilisable par tout le monde et permet d'avoir des prévisions météo.
+    Module de prévision météo (instantanée et sur 5 jours).
     """
     def __init__(self, bot):
         self.bot = bot

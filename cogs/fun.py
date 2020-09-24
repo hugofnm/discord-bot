@@ -6,9 +6,9 @@ from random import choice, randint
 from requests import get as rget
 
 
-class Random(commands.Cog, name='Random'):
+class Fun(commands.Cog, name='Fun'):
     """
-    Utilisable par tout le monde et contient des "jeux" et de l'aléatoire.
+    Utilisable par tout le monde et contient les commandes.
     """
     def __init__(self, bot):
         self.bot = bot
@@ -37,14 +37,6 @@ class Random(commands.Cog, name='Random'):
         number = randint(1, faces)
         await ctx.send(f'🎲 Tu as obtenu un {number} !')
 
-    @commands.command(brief='!meme', description='Regarder un meme aléatoire')
-    async def meme(self, ctx):
-        data = rget('https://meme-api.herokuapp.com/gimme').json()
-        embed = (Embed(title=f":speech_balloon: r/{data['subreddit']} :", color=0x3498db)
-                .set_image(url=data['url'])
-                .set_footer(text=data['postLink']))
-        await ctx.send(embed=embed)
-
 
 def setup(bot):
-    bot.add_cog(Random(bot))
+    bot.add_cog(Fun(bot))

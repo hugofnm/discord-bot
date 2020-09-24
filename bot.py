@@ -7,12 +7,13 @@ bot.remove_command('help')
 initial_extensions = [
     'cogs.admin',
     'cogs.setup',
-    'cogs.music',
+    'cogs.logs',
     'cogs.utility',
-    'cogs.random',
+    'cogs.music',
+    'cogs.fun',
     'cogs.weather',
     'cogs.search',
-    'cogs.logs'
+    'cogs.interaction',
 ]
 
 if __name__ == '__main__':

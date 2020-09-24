@@ -7,7 +7,7 @@ from sqlite3 import connect
 
 class Setup(commands.Cog, name='Setup'):
     """
-    Commandes de setup serveur réservées aux admins et rassemble les commandes pour configurer le bot
+    Module rassemblant les commandes pour configurer le bot.
     """
     def __init__(self, bot):
         self.bot = bot  
