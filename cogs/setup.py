@@ -155,7 +155,7 @@ class Setup(commands.Cog, name='Setup'):
         with connect('data.db') as conn:
             c = conn.cursor()
             c.execute("INSERT INTO logs (ID, State) VALUES (?, ?)", (guild.id, 0))
-            c.execute(f'CREATE TABLE IF NOT EXISTS "{guild.id}" (User_ID INTEGER, Warns TEXT, Mute INTEGER, Verif INTEGER)')
+            c.execute(f'CREATE TABLE IF NOT EXISTS "{guild.id}" (User_ID INTEGER, Warns TEXT, Mute INTEGER, Verif INTEGER, Temp INTEGER)')
             conn.commit()
         channel = await self.bot.fetch_channel(747480897426817095)
         embed = (Embed(color=0xf1c40f)
