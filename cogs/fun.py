@@ -8,7 +8,7 @@ from requests import get as rget
 
 class Fun(commands.Cog, name='Fun'):
     """
-    Utilisable par tout le monde et contient les commandes.
+    Module qui contient des commandes pour s'amuser.
     """
     def __init__(self, bot):
         self.bot = bot
