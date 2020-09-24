@@ -1,27 +1,32 @@
-# Liens d'invitation
+# Liens / Links
 Vous voulez ce bot sur votre serveur ? [Cliquez sur ce lien !](https://discord.com/api/oauth2/authorize?client_id=713781013830041640&permissions=334622423&scope=bot)<br>
-Vous avez des idées, des recommendations ou des problèmes avec le bot ? [Rejoignez le discord !](https://discord.gg/H68KXcm)
+You want this bot on your server ? [Click this link](https://discord.com/api/oauth2/authorize?client_id=713781013830041640&permissions=334622423&scope=bot)<br>
+
+Vous avez des idées, des recommendations ou des problèmes avec le bot ? [Rejoignez le discord !](https://discord.gg/H68KXcm)<br>
+You have any ideas, recommendations or problems with this bot ? [Join the discord!](https://discord.gg/H68KXcm)<br>
+
+Vous voulez juste utiliser le code pour votre bot, [regardez la documentation.](https://github.com/MrSpaar/discord-bot/wiki)<br>
+If you only want to use the code, [you can look at the documentation.](https://github.com/MrSpaar/discord-bot/wiki)<br>
+
 
 # E - Wizard
-C'est un bot *tout-en-un* écris en python (3.8.3) qui contient:
+C'est un bot *tout-en-un* écris en python (3.8.3) et discord.py (1.4.1)<br>
+This is a *all-in-one* bot writen with python (3.8.3) and discord.py (1.4.1)
 
-| Categorie |                        Description                                          |
-|-----------|-----------------------------------------------------------------------------|
-|Moderation |`!ban` `!unban` `!kick` `!mute` `!warn` `!warns` `!annonce`                  |
-|Setup      |`!regles` `!roles` `!setup verif/mute/logs`                                 |
-|Musique    |`!play` `!pause` `!skip` `!remove`                                           |
-|Utilitaire |`!help` `!sondage`                                                           |
-|Recherche  |`!twitch` `!profil` `!discord` `!github` `!anime` `!wikipedia`               |
-|Random     |`!pof` `!roll` `!meme` `!ping`                                               |
-|Météo      |`!meteo`                                                                     |
+|Categorie/Category|                           Description                                       |
+|------------------|-----------------------------------------------------------------------------|
+|Moderation        |`!ban` `!unban` `!kick` `!mute` `!warn` `!warns` `!annonce`                  |
+|Setup             |`!regles` `!roles` `!setup verif/mute/logs`                                  |
+|Musique/Music     |`!play` `!pause` `!skip` `!remove`                                           |
+|Utilitaire/Utility|`!help` `!sondage`                                                           |
+|Recherche/Search  |`!twitch` `!profil` `!discord` `!github` `!anime` `!wikipedia`               |
+|Random            |`!pof` `!roll` `!meme` `!ping`                                               |
+|Météo/Weather     |`!meteo`                                                                     |
 
-Je travaille toujours sur ce bot, les prochaines fonctionnalités prévues sont :
-- Un système de niveaux et de monnaie
-- Commandes d'intéractions sociales (hug, pat, slap, ...)
-- Une commande pour traduire du texte
-- Une commande de calcul mathématiques
+# Fonctionnalités à venir / Upcoming features
 
-# Version des librairies
-| Librarie | discord |discord.py|  PyNaCl |requests |  wheel  |youtube-dl |
-|----------|---------|----------|---------|---------|---------|-----------|
-|  Version |  1.0.1  |   1.4.1  |  1.4.0  |  2.24.0 |  0.34.2 |2020.6.16.1|
+- Système de monnaie / Currency system
+- Commandes d'interaction sociales / Social interaction commands
+- Commande de traduction / Translation command
+- Commande de calculs / Calculus command
+- Alertes de stream / Stream alerts
