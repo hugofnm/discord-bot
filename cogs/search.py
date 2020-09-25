@@ -81,8 +81,8 @@ class Search(commands.Cog, name='Recherche'):
                  .set_author(name='Github', icon_url='https://image.flaticon.com/icons/png/512/23/23957.png'))
         desc = {
             '👀 Vues':  f"{repo.get_views_traffic()['count']} vues",
-            '⭐ Étoiles': f"[{repo.stargazers_count} étoiles]({repo.stargazers_url})",
-            '📥 Forks': f'[{repo.forks_count} branches]({repo.forks_url})',
+            '⭐ Étoiles': f"[{repo.stargazers_count} étoiles]({repo.html_url}/stargazers)",
+            '📥 Forks': f'[{repo.forks_count} branches]({repo.html_url}/network/members)',
             '📝 Création': repo.created_at.strftime('%d/%m/%Y'),
             '📝 Auteur': f'[{name.split("/")[0]}]({repo.owner.url})',
             '⏲️ Dernier Commit': repo.updated_at.strftime('%d/%m/%Y à %H:%M'),
@@ -130,7 +130,7 @@ class Search(commands.Cog, name='Recherche'):
     @commands.command(brief='!anime [nom]', description='Rechercher un anime')
     async def anime(self, ctx, *, name):
         resp = dict(await Search.get_json(f'https://kitsu.io/api/edge/anime?filter[text]={name}'))['data'][0]
-        anime, url = resp['attributes'], resp['links']['self']
+        anime, url = resp['attributes'], f"https://kitsu.io/anime/{resp['attributes']['slug']}"
         h, m = divmod(int(anime['totalLength']), 60)
         embed = (Embed(title=anime['titles']['en_jp'], description=anime['synopsis'], url=url, color=0x546e7a)
                  .set_author(name='Anime', icon_url='https://lh3.googleusercontent.com/CjzbMcLbmTswzCGauGQExkFsSHvwjKEeWLbVVJx0B-J9G6OQ-UCl2eOuGBfaIozFqow')
