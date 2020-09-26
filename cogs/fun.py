@@ -1,8 +1,8 @@
-from discord import Embed, Member
+from discord import Embed, Member, Color
 from discord.ext import commands
 from discord.utils import get
 
-from random import choice, randint
+from random import choice
 from requests import get as rget
 
 
@@ -15,14 +15,14 @@ class Fun(commands.Cog, name='Fun'):
 
     @commands.command(brief='!pof [pile/face]', description='Faire un pile ou face contre le bot')
     async def pof(self, ctx, arg):
-        if arg.lower() == 'pile' or arg.upper() == 'face':
-            piece = choice(['pile', 'face'])
-            if arg.lower() in piece:
-                await ctx.send(f':white_check_mark: {piece}! GG, tu as gagné.')
-            else:
-                await ctx.send(f':negative_squared_cross_mark: {piece}! Tu as perdu.')
+        if arg.title() in ['Pile', 'Face']:
+            result = choice(['Pile', 'Face'])
+            if arg.title() in result: desc = f'🪙 {result} ! Tu as gagné.'
+            else: desc = f'🪙 {result} ! Tu as perdu.'
         else:
-            await ctx.send('❌ Tu dois entrer "pile" ou "face"!')         
+            desc = '❌ Tu dois entrer "pile" ou "face"!'
+        embed = Embed(description=desc, color=0xf1c40f)
+        await ctx.send(embed=embed)
 
     @commands.command(brief='!ping [random/pseudo]', description="Mentionner quelqu'un")
     async def ping(self, ctx, arg: Member):
@@ -33,9 +33,24 @@ class Fun(commands.Cog, name='Fun'):
             await ctx.send(f'Hey {arg.mention} !')
 
     @commands.command(aliases=['r'], brief='!roll [x]', description="Lancer un dé de [x] faces")
-    async def roll(self, ctx, faces: int):
-        number = randint(1, faces)
-        await ctx.send(f'🎲 Tu as obtenu un {number} !')
+    async def roll(self, ctx, dices: str):
+        content = dices.split('+')
+        rolls, bonus = [], []
+        for elem in content:
+            if elem.isdigit():
+                bonus.append(int(elem))
+            else:
+                n, faces = elem.split('d') if elem.split('d')[0] != '' else (1, elem[1:])
+                rolls.append([choice(range(1, int(faces)+1)) for _ in range(int(n))])
+        if len(rolls)>1:
+            total = sum(sum(l) for l in rolls) + sum(bonus)
+            rolls, bonus = [[str(n) for n in roll] for roll in rolls], f" + {' + '.join([str(n) for n in bonus])}"
+            rolls = " + ".join([' + '.join(roll) for roll in rolls])
+        else:
+            total = sum(rolls[0]) + sum(bonus)
+            rolls, bonus = ' + '.join([str(n) for n in rolls[0]]), f" + {' + '.join([str(n) for n in bonus])}"
+        embed = Embed(description=f"**🎲 Résultat du lancé :** {rolls}{bonus if bonus!=' + ' else ''} = {total}", color=0xf1c40f)
+        await ctx.send(embed=embed)
 
 
 def setup(bot):
