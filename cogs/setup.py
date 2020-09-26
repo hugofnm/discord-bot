@@ -2,6 +2,7 @@ from discord import Role, TextChannel, Permissions, Embed, Color
 from discord.ext import commands
 from discord.utils import get
 
+from datetime import datetime
 from sqlite3 import connect
 
 
@@ -158,7 +159,7 @@ class Setup(commands.Cog, name='Setup'):
             c.execute("INSERT INTO logs (ID, State) VALUES (?, ?)", (guild.id, 0))
             conn.commit()
         channel = await self.bot.fetch_channel(747480897426817095)
-        embed = (Embed(color=0xf1c40f)
+        embed = (Embed(color=0xf1c40f, timestamp=datetime.now())
                  .add_field(name='👥 Membres', value=f'{guild.member_count} members')
                  .add_field(name='🌍 Région', value=str(guild.region).capitalize())
                  .add_field(name='🗝️ Owner', value=guild.owner)

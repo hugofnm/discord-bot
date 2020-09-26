@@ -49,6 +49,14 @@ class Utility(commands.Cog, name='Utilitaire'):
         for i in range(len(items[1:])):
             await message.add_reaction(reactions[i])
 
+    @commands.command()
+    async def calcul(self, ctx, string):
+        string = string.replace('x', '*')
+        string = string.replace('^', '**')
+        result = eval(string, {'__builtins__': None})
+        embed = Embed(description=f'📟 **Calcul :** {string} = {result}', color=0x206694)
+        await ctx.send(embed=embed)
+
 
 def setup(bot):
     bot.add_cog(Utility(bot))
