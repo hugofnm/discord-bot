@@ -1,4 +1,4 @@
-from discord import Embed, Colour
+from discord import Embed, Color
 from discord.ext import commands
 from discord import AuditLogAction
 from discord.utils import get
@@ -178,7 +178,7 @@ class Logs(commands.Cog):
             c.execute(f'DROP TABLE"{guild.id}"')
             conn.commit()
         channel = await self.bot.fetch_channel(747480897426817095)
-        embed = (Embed(color=0xf1c40f, timestamp=datetime.now())
+        embed = (Embed(color=0xe74c3c, timestamp=datetime.now())
                  .add_field(name='👥 Membres', value=f'{guild.member_count} members')
                  .add_field(name='🌍 Région', value=str(guild.region).capitalize())
                  .add_field(name='🗝️ Owner', value=guild.owner)
