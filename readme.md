@@ -8,19 +8,18 @@ You have any ideas, recommendations or problems with this bot? [Join the discord
 Si vous voulez juste utiliser le code pour votre bot, vous pouvez [regardez la documentation.](https://github.com/MrSpaar/discord-bot/wiki)<br>
 If you only want to use the code, [take a look at the documentation.](https://github.com/MrSpaar/discord-bot/wiki)<br>
 
-
 # E - Wizard
 C'est un bot *tout-en-un* écris en python (3.8.3) et discord.py (1.4.1)<br>
 This is a *all-in-one* bot writen with python (3.8.3) and discord.py (1.4.1)
 
-|Categorie/Category|                           Description                                       |
+|Categorie/Category|                          Commandes/Commands                                 |
 |------------------|-----------------------------------------------------------------------------|
 |Moderation        |`!ban` `!unban` `!kick` `!mute` `!warn` `!warns` `!annonce`                  |
-|Setup             |`!regles` `!roles` `!setup verif/mute/logs`                                  |
+|Setup             |`!regles` `!roles` `!setup`                                                  |
 |Musique/Music     |`!play` `!pause` `!skip` `!remove`                                           |
-|Utilitaire/Utility|`!help` `!sondage`                                                           |
+|Utilitaire/Utility|`!help` `!sondage` `!calcul`                                                 |
 |Recherche/Search  |`!twitch` `!profil` `!discord` `!github` `!anime` `!wikipedia`               |
-|Random            |`!pof` `!roll` `!meme` `!ping`                                               |
+|Fun               |`!pof` `!roll` `!ping`                                                       |
 |Météo/Weather     |`!meteo`                                                                     |
 
 # Fonctionnalités à venir / Upcoming features
