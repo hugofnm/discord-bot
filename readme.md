@@ -12,20 +12,19 @@ If you only want to use the code, [take a look at the documentation.](https://gi
 C'est un bot *tout-en-un* écris en python (3.8.3) et discord.py (1.4.1)<br>
 This is a *all-in-one* bot writen with python (3.8.3) and discord.py (1.4.1)
 
-|Categorie/Category|                          Commandes/Commands                                 |
-|------------------|-----------------------------------------------------------------------------|
-|Moderation        |`!ban` `!unban` `!kick` `!mute` `!warn` `!warns` `!annonce`                  |
-|Setup             |`!regles` `!roles` `!setup`                                                  |
-|Musique/Music     |`!play` `!pause` `!skip` `!remove`                                           |
-|Utilitaire/Utility|`!help` `!sondage` `!calcul`                                                 |
-|Recherche/Search  |`!twitch` `!profil` `!discord` `!github` `!anime` `!wikipedia`               |
-|Fun               |`!pof` `!roll` `!ping`                                                       |
-|Météo/Weather     |`!meteo`                                                                     |
+|Categorie/Category|Commandes/Commands|
+|------------------|------------------|
+|Moderation|`!ban` `!unban` `!kick` `!mute` `!warn` `!warns` `!annonce`|
+|Setup|`!regles` `!roles` `!setup`|
+|Musique/Music|`!play` `!pause` `!skip` `!remove`|
+|Utilitaire/Utility|`!help` `!sondage` `!calcul`|
+|Recherche/Search|`!twitch` `!profil` `!discord` `!github` `!anime` `!wikipedia`|
+|Fun|`!pof` `!roll` `!ping`|
+|Météo/Weather|`!meteo`|
 
 # Fonctionnalités à venir / Upcoming features
 
+- Système de langue / Language System (70% done)
 - Système de monnaie / Currency system
-- Commandes d'interaction sociales / Social interaction commands
 - Commande de traduction / Translation command
-- Commande de calculs / Calculus command
 - Alertes de stream / Stream alerts

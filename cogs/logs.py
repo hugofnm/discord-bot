@@ -101,7 +101,7 @@ class Logs(commands.Cog):
             'clear': {'title': '🗑️  Messages effacés', 'desc': f"{ctx.author.mention} a supprimé {cmd_args[0]} messages.", 'color': 0x1f8b4c},
             'poll': {'title': '📋 Sondage créé', 'desc': f"Question: *{cmd_args[0]}*\nChoix: *{' / '.join(cmd_args[1:])}*\nPar {ctx.author.mention}",'color': 0x7289da},
             'logs': {'title': f'🖨️ Logs {state}', 'desc': f'{ctx.author.mention} {state} les logs', 'color': 0x11806a},
-            'role': {'title': f'💾 "{cmd_args[0]}" modifié', 'desc': f'{ctx.author.mention} a défini {cmd_args[1]} pour "{cmd_args[0]}"', 'color': 0xa84300}
+            'setup': {'title': f'💾 "{cmd_args[0]}" modifié', 'desc': f'{ctx.author.mention} a défini {cmd_args[1]} pour "{cmd_args[0]}"', 'color': 0xa84300}
         }
 
         if not cmd in cmd_list.keys():
