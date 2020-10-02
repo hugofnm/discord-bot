@@ -1,10 +1,10 @@
 from discord import Embed, Status, Member, Color, Invite
 from discord.ext import commands
 
+from tools.tools import get_json
 from datetime import datetime
 from os import environ
 from sqlite3 import connect
-from aiohttp import ClientSession
 from github import Github
 
 
@@ -15,12 +15,6 @@ class Search(commands.Cog, name='Recherche'):
     def __init__(self, bot):
         self.bot = bot
 
-    @staticmethod
-    async def get_json(link, headers=None):
-        async with ClientSession() as s:
-            async with s.get(link, headers=headers) as resp:
-                return await resp.json()
-
     @commands.command(brief='!twitch [jeu] [mots]', description='Rechercher des streams sur Twitch')
     async def twitch(self, ctx, game, *keys, streams=[]):
         headers = {
@@ -28,11 +22,11 @@ class Search(commands.Cog, name='Recherche'):
             'Client-ID': environ['TWITCH_CLIENT'],
             'Authorization': f"Bearer {environ['TWITCH_TOKEN']}",
         }
-        category = dict(await Search.get_json(f'https://api.twitch.tv/kraken/search/games?query={game}', headers))['games'][0]
+        category = dict(await get_json(f'https://api.twitch.tv/kraken/search/games?query={game}', headers))['games'][0]
         embed = (Embed(title=category['name'], color=0x3498db)
                  .set_thumbnail(url=category['box']['small'])
                  .set_author(name='Twitch', icon_url='https://www.pearlinux.fr/wp-content/uploads/2018/10/logo-tv-twitch-android-app.png'))
-        response = await Search.get_json(f"https://api.twitch.tv/helix/streams?game_id={category['_id']}", headers)
+        response = await get_json(f"https://api.twitch.tv/helix/streams?game_id={category['_id']}", headers)
         for stream in response['data']:
             if keys:
                 for key in keys:
@@ -117,9 +111,9 @@ class Search(commands.Cog, name='Recherche'):
 
     @commands.command(brief='!wikipedia [mots]', description='Rechercher un article wikipedia', aliases=['wiki'])
     async def wikipedia(self, ctx, *, arg):
-        resp = list(await Search.get_json(f'https://fr.wikipedia.org/w/api.php?action=opensearch&search={arg}&namespace=0&limit=1'))
+        resp = list(await get_json(f'https://fr.wikipedia.org/w/api.php?action=opensearch&search={arg}&namespace=0&limit=1'))
         title, url = resp[1][0], resp[3][0]
-        resp = dict(await Search.get_json(f'https://fr.wikipedia.org/w/api.php?format=json&action=query&prop=extracts|pageimages&exintro&explaintext&redirects=1&titles={title}'))['query']['pages']
+        resp = dict(await get_json(f'https://fr.wikipedia.org/w/api.php?format=json&action=query&prop=extracts|pageimages&exintro&explaintext&redirects=1&titles={title}'))['query']['pages']
         data = next(iter(resp.values()))
         desc = data['extract'] if len(data['extract'])<2045 else f"{data['extract'][:2045]}..."
         embed = (Embed(title=f'{title} - Wikipedia', description=desc, url=url, color=0x546e7a)
@@ -129,7 +123,7 @@ class Search(commands.Cog, name='Recherche'):
 
     @commands.command(brief='!anime [nom]', description='Rechercher un anime')
     async def anime(self, ctx, *, name):
-        resp = dict(await Search.get_json(f'https://kitsu.io/api/edge/anime?filter[text]={name}'))['data'][0]
+        resp = dict(await get_json(f'https://kitsu.io/api/edge/anime?filter[text]={name}'))['data'][0]
         anime, url = resp['attributes'], f"https://kitsu.io/anime/{resp['attributes']['slug']}"
         h, m = divmod(int(anime['totalLength']), 60)
         embed = (Embed(title=anime['titles']['en_jp'], description=anime['synopsis'], url=url, color=0x546e7a)

@@ -115,7 +115,7 @@ class Moderation(commands.Cog, name='Moderation'):
     @commands.command(brief='!annonce [texte]', description='Faire une annonce')
     @commands.has_permissions(manage_messages=True)
     async def annonce(self, ctx, *, text):
-        embed = (Embed(title=text, timestamp=datetime.now(), color=0xf1c40f)
+        embed = (Embed(description=f'**{text}**', timestamp=datetime.now(), color=0xf1c40f)
                  .set_author(name=f'Annonce de {ctx.author.display_name}', icon_url=ctx.author.avatar_url))
 
         await ctx.message.delete()

@@ -2,7 +2,7 @@ from discord import Embed, Color
 from discord.ext import commands
 from discord.utils import get
 
-from aiohttp import ClientSession
+from tools.tools import get_json
 from os import environ
 from datetime import datetime, timedelta
 from sqlite3 import connect
@@ -17,12 +17,9 @@ class Weather(commands.Cog, name='Météo'):
 
     @staticmethod
     async def get_cast(city, forecast=False):
-        async with ClientSession() as s:
-            if forecast:
-                async with s.get(f"http://api.openweathermap.org/data/2.5/forecast?q={city}&units=metric&APPID={environ['WEATHER_TOKEN']}") as resp:
-                    return await resp.json()
-            async with s.get(f"http://api.openweathermap.org/data/2.5/weather?q={city}&units=metric&APPID={environ['WEATHER_TOKEN']}") as resp:
-                data = await resp.json()
+        if forecast:
+            return await get_json(f"http://api.openweathermap.org/data/2.5/forecast?q={city}&units=metric&APPID={environ['WEATHER_TOKEN']}")
+        data = await get_json(f"http://api.openweathermap.org/data/2.5/weather?q={city}&units=metric&APPID={environ['WEATHER_TOKEN']}")
         cleared_data = {
             'Ville': data['name'],
             'Heure': (datetime.utcfromtimestamp(data['dt']) + timedelta(hours=2)).strftime('%H:%M:%S'),
