@@ -22,19 +22,19 @@ class Search(commands.Cog, name='Recherche'):
             'Client-ID': environ['TWITCH_CLIENT'],
             'Authorization': f"Bearer {environ['TWITCH_TOKEN']}",
         }
-        category = dict(await get_json(f'https://api.twitch.tv/kraken/search/games?query={game}', headers))['games'][0]
-        embed = (Embed(title=category['name'], color=0x3498db)
-                 .set_thumbnail(url=category['box']['small'])
+        limit = 100 if keys else 10
+        resp = dict(await get_json(f"https://api.twitch.tv/kraken/search/streams?query={game}&limit={limit}", headers))['streams']
+        embed = (Embed(title=resp[0]['game'], color=0x3498db)
                  .set_author(name='Twitch', icon_url='https://www.pearlinux.fr/wp-content/uploads/2018/10/logo-tv-twitch-android-app.png'))
-        response = await get_json(f"https://api.twitch.tv/helix/streams?game_id={category['_id']}", headers)
-        for stream in response['data']:
+        for stream in resp:
             if keys:
                 for key in keys:
-                    if key.lower() in stream['title'].lower() and not stream in streams:
-                        streams.append(stream)
-                        embed.add_field(name=f"{stream['user_name']}", value=f"[{stream['title']}](https://twitch.tv/{stream['user_name']})")
+                    if key.lower() not in stream['channel']['status'].lower():
+                        continue
+                    streams.append(stream)
+                    embed.add_field(name=f"{stream['channel']['display_name']}", value=f"[{stream['channel']['status']}](https://twitch.tv/{stream['channel']['url']})")
             else:
-                embed.add_field(name=f"{stream['user_name']}", value=f"[{stream['title']}](https://twitch.tv/{stream['user_name']})")
+                embed.add_field(name=f"{stream['channel']['display_name']}", value=f"[{stream['channel']['status']}](https://twitch.tv/{stream['channel']['display_name']})")
         if len(embed.fields)==0:
             embed.add_field(name='\u200b', value='Aucuns streams trouvés')
         await ctx.send(embed=embed)
