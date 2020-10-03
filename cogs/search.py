@@ -27,14 +27,15 @@ class Search(commands.Cog, name='Recherche'):
         embed = (Embed(title=resp[0]['game'], color=0x3498db)
                  .set_author(name='Twitch', icon_url='https://www.pearlinux.fr/wp-content/uploads/2018/10/logo-tv-twitch-android-app.png'))
         for stream in resp:
+            stream = stream['channel']
             if keys:
                 for key in keys:
-                    if key.lower() not in stream['channel']['status'].lower():
+                    if key.lower() not in stream['status'].lower():
                         continue
                     streams.append(stream)
-                    embed.add_field(name=f"{stream['channel']['display_name']}", value=f"[{stream['channel']['status']}](https://twitch.tv/{stream['channel']['url']})")
+                    embed.add_field(name=f"{stream['display_name']}", value=f"[{stream['status']}]({stream['url']})")
             else:
-                embed.add_field(name=f"{stream['channel']['display_name']}", value=f"[{stream['channel']['status']}](https://twitch.tv/{stream['channel']['display_name']})")
+                embed.add_field(name=f"{stream['display_name']}", value=f"[{stream['status']}]({stream['url']})")
         if len(embed.fields)==0:
             embed.add_field(name='\u200b', value='Aucuns streams trouvés')
         await ctx.send(embed=embed)
