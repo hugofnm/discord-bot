@@ -47,7 +47,8 @@ class Search(commands.Cog, name='Recherche'):
             c = conn.cursor()
             c.execute(f'SELECT WARNS FROM "{ctx.guild.id}" WHERE User_ID=?', (member.id,))
             entry = c.fetchone()
-            warn_nb = len(entry.split('\n')) if entry else 0
+            warn_nb = len(entry[0].split('\n')) if entry else 0
+        print(member.status)
         flags = [str(flag)[10:].replace('_', ' ').title() for flag in member.public_flags.all()]
         status = {'online': 'En ligne', 'offline': 'Hors ligne', 'invisible': 'Invisible', 'idle': 'Absent', 'dnd': 'Ne pas déranger'}
         embed = (Embed(color=0x1abc9c)

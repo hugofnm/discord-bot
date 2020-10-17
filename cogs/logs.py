@@ -145,7 +145,7 @@ class Logs(commands.Cog):
         embed = Embed(description=f'**:inbox_tray: {member.mention} a rejoint le serveur !**', color=0x2ecc71, timestamp=datetime.now())
         await channel.send(embed=embed)
 
-        embed = Embed(title=":inbox_tray: Nouveau membre !", description=f'{member.mention} a rejoint le serveru', color=0x2ecc71, timestamp=datetime.now())
+        embed = Embed(title=":inbox_tray: Nouveau membre !", description=f'{member.mention} a rejoint le serveur', color=0x2ecc71, timestamp=datetime.now())
         embed.set_image(url=member.avatar_url)
         await member.guild.system_channel.send(embed=embed)
 

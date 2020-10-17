@@ -41,15 +41,20 @@ class Moderation(commands.Cog, name='Moderation'):
         units = {"s": [1, 'secondes'], "m": [60, 'minutes'], "h": [3600, 'heures']}
         duration = int(time[:-1]) * units[time[-1]][0]
         time = f"{time[:-1]} {units[time[-1]][1]}"
-        embed = (Embed(description=f'Par : {ctx.author.mention}\nDurée : {time}.\nRaison : {reason}', color=0xe74c3c)
+        embed = (Embed(color=0xe74c3c)
+                 .add_field(name='Par', value=f"```{ctx.author.display_name}```", inline=True)
+                 .add_field(name='Durée', value=f"```{time}```", inline=True)
+                 .add_field(name='Raison', value=f"```{reason}```", inline=False)
                  .set_author(name=f'{member} a été mute', icon_url=member.avatar_url))
         await ctx.send(embed=embed)
-        await self.mute_handler(ctx, duration, member)
+        #await self.mute_handler(ctx, duration, member)
 
     @commands.command(brief='!kick [membre] [raison]', description='Kicker un membre')
     @commands.has_permissions(kick_members=True)
     async def kick(self, ctx, member: Member, *, reason: str = None):
-        embed = (Embed(description=f'Par : {ctx.author.mention}\nRaison : {reason}', color=0xe74c3c)
+        embed = (Embed(color=0xe74c3c)
+                 .add_field(name='Par', value=f"```{ctx.author.display_name}```")
+                 .add_field(name='Raison', value=f"```{reason}```")
                  .set_author(name=f'{member} a été kick', icon_url=member.avatar_url))
         await member.kick(reason=reason)
         await ctx.send(embed=embed)
@@ -57,9 +62,11 @@ class Moderation(commands.Cog, name='Moderation'):
     @commands.command(brief='!ban [membre] [raison]', description='Ban un membre')
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, member: Member, *, reason: str = None):
-        embed = (Embed(description=f'Par : {ctx.author.mention}\nRaison : {reason}', color=0xe74c3c)
+        embed = (Embed(color=0xe74c3c)
+                 .add_field(name='Par', value=f"```{ctx.author.display_name}```")
+                 .add_field(name='Raison', value=f"```{reason}```")
                  .set_author(name=f'{member} a été ban', icon_url=member.avatar_url))
-        await member.ban(reason=reason)
+        #await member.ban(reason=reason)
         await ctx.send(embed=embed)
 
     @commands.command(brief='!unban [membre] [raison]', description='Unban un membre')
@@ -71,8 +78,10 @@ class Moderation(commands.Cog, name='Moderation'):
             await ctx.send(embed=embed); return
         for entry in ban_list:
             if member.lower() in entry.user.name.lower():
-                embed = (Embed(description=f'Par : {ctx.author.avatar_url}\nRaison : {reason}', color=0x2ecc71)
-                 .set_author(name=f'{member} a été unban', icon_url=member.avatar_url))
+                embed = (Embed(color=0x2ecc71)
+                         .add_field(name='Par', value=f"```{ctx.author.display_name}```")
+                         .add_field(name='Raison', value=f"```{reason}```")
+                         .set_author(name=f'{member} a été unban', icon_url=member.avatar_url))
                 await ctx.guild.unban(entry.user, reason=reason)
                 await ctx.send(embed=embed); return
         embed = Embed(title="Something went wrong:", description="No matching user!", color=0xe74c3c)
@@ -94,7 +103,9 @@ class Moderation(commands.Cog, name='Moderation'):
                 c.execute(f'UPDATE "{ctx.guild.id}" SET Warns=? WHERE User_ID=?', (warns, member.id))
             conn.commit()
         
-        embed = (Embed(description=f'Par : {ctx.author.mention}\nRaison : {reason}', color=0xe74c3c)
+        embed = (Embed(color=0xe74c3c)
+                 .add_field(name='Par', value=f"```{ctx.author.display_name}```")
+                 .add_field(name='Raison', value=f"```{reason}```")
                  .set_author(name=f'{member} a été warn', icon_url=member.avatar_url))
         await ctx.send(embed=embed)
 
@@ -108,7 +119,7 @@ class Moderation(commands.Cog, name='Moderation'):
         embed = Embed(color=0xe74c3c)
         for warn in warns.split('\n')[:-1]:
             date, reason = warn.split(' - ')
-            embed.add_field(name=f"🚨 {date.replace('@', ' - ')}", value=f'{reason}', inline=False)
+            embed.add_field(name=f"{date.replace('@', ' - ')}", value=f'```{reason}```', inline=False)
         embed.set_author(name=f"Warns de {member.display_name}", icon_url=member.avatar_url)
         await ctx.send(embed=embed)
 

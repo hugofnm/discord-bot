@@ -9,8 +9,8 @@ Si vous voulez juste utiliser le code pour votre bot, vous pouvez [regardez la d
 If you only want to use the code, [take a look at the documentation.](https://github.com/MrSpaar/discord-bot/wiki)<br>
 
 # E - Wizard
-C'est un bot *tout-en-un* écris en python (3.8.3) et discord.py (1.4.1)<br>
-This is a *all-in-one* bot writen with python (3.8.3) and discord.py (1.4.1)
+C'est un bot *tout-en-un* écris en python (3.8.3) et discord.py (1.5.0)<br>
+This is a *all-in-one* bot writen with python (3.8.3) and discord.py (1.5.0)
 
 |Categorie/Category|Commandes/Commands|
 |------------------|------------------|
