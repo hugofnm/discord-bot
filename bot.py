@@ -2,10 +2,10 @@ from discord import Game, Intents, __version__
 from discord.ext import commands
 from os import environ
 
-bot = commands.Bot(command_prefix=['!', '$'])
 intents = Intents.default()
 intents.members = True
 intents.presences = True
+bot = commands.Bot(command_prefix=['!', '$'], intents=intents)
 bot.remove_command('help')
 
 initial_extensions = [
