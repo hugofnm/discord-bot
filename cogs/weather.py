@@ -5,7 +5,6 @@ from discord.utils import get
 from tools.tools import get_json
 from os import environ
 from datetime import datetime, timedelta
-from sqlite3 import connect
 
 
 class Weather(commands.Cog, name='Météo'):
@@ -43,21 +42,12 @@ class Weather(commands.Cog, name='Météo'):
         embed = Embed(title=f":white_sun_small_cloud: Météo à {data['Ville']} :", color=0x3498db)
         for key, value in data.items():
             embed.add_field(name=key, value=value)
-        embed.set_footer(text="Page 1/6")
+        embed.set_footer(text=f"Page 1/6 • {city} • {datetime.now().strftime('%d/%m/%Y')}")
 
         data = await Weather.get_cast(city, True)
         days = {entry['dt_txt'][:10]: [] for entry in data['list']}
         for index, entry in enumerate(data['list']):
             days[entry['dt_txt'][:10]].append(f"{entry['dt_txt'][11:-3]} → {entry['weather'][0]['main']} - {entry['main']['temp']}°C\n")
-
-        with connect('data.db') as conn:
-            c = conn.cursor()
-            for key in days.keys():
-                days[key] = ''.join(days[key])
-                c.execute('SELECT * FROM weather WHERE (Day=? AND City=?)', (key, data['city']['name']))
-                if c.fetchone() is None:
-                    c.execute("INSERT INTO weather(Day, City, Data) VALUES (?, ?, ?)", (key, data['city']['name'], days[key]))
-            conn.commit()
 
         msg = await ctx.send(embed=embed)
         for emoji in ["◀️", "▶️"]:
@@ -71,29 +61,37 @@ class Weather(commands.Cog, name='Météo'):
 
         channel = self.bot.get_channel(payload.channel_id)
         message = await channel.fetch_message(payload.message_id)
-        reaction = get(message.reactions, emoji=payload.emoji.name)
-        page = int(message.embeds[0].footer.text[5])
-        days = tuple((message.created_at+timedelta(days=i)).strftime("%Y-%m-%d") for i in range(0,6))
+        emoji = payload.emoji.name
+        reaction = get(message.reactions, emoji=emoji)
+        embed = message.embeds[0]
 
-        with connect('data.db') as conn:
-            c = conn.cursor()
-            c.execute("SELECT * FROM weather WHERE Day=? OR Day=? OR Day=? OR Day=? OR Day=? or Day=?", days)
-            data = [list(day) for day in c.fetchall()]
+        page, city, day = embed.footer.text.split(' • ')
+        data = (await Weather.get_cast(city, True))
+        forecast = {entry['dt_txt'][:10]: [] for entry in data['list']}
+        for entry in data['list']:
+            forecast[entry['dt_txt'][:10]].append(f"{entry['dt_txt'][11:]} → {entry['weather'][0]['main']} - {entry['main']['temp']}°C")
+ 
+        if emoji == "▶️":
+            next_page = (int(page[5])+1)%6 if (int(page[5])+1)%6 != 0 else 1
+            next_day = [(datetime.strptime(day, '%d/%m/%Y') + timedelta(days=1))]*2
+        elif emoji == "◀️":
+            next_page = (int(page[5])-1)%6 if (int(page[5])-1)%6 != 0 else 6
+            next_day = [(datetime.strptime(day, '%d/%m/%Y') - timedelta(days=1))]*2 if next_page != 6 else [datetime.strptime(list(forecast.keys())[-1], '%Y-%m-%d')]*2
+        next_day[0], next_day[1] = next_day[0].strftime('%d/%m/%Y'), next_day[1].strftime('%Y-%m-%d')
 
-        await reaction.remove(user)
-        if (page==1 and payload.emoji.name =="◀️") or (page==6 and payload.emoji.name =="▶️"):
-            return
-        data = data[page-2] if payload.emoji.name == "◀️" else data[page]
-        if page == 2 and datetime.now().strftime("%Y-%m-%d") == data[0]:
-            data = await Weather.get_cast(data[1])
-            embed = (Embed(title=f":white_sun_small_cloud: Météo à {data['Ville']} :", color=0x3498db)
-                     .set_footer(text="Page 1/6"))
-            for key, value in data.items():
+        day_data = forecast if next_page != 1 else (await Weather.get_cast(city))
+        if next_page == 1:
+            embed = (Embed(title=f":white_sun_small_cloud: Météo à {day_data['Ville']} :", color=0x3498db)
+                     .set_footer(text=f"Page 1/6 • {city} • {datetime.now().strftime('%d/%m/%Y')}"))
+            for key, value in day_data.items():
                 embed.add_field(name=key, value=value)
         else:
-            embed = (Embed(title=f':white_sun_small_cloud: {data[0]} - Météo à {data[1]}:', color=0x3498db)
-                     .add_field(name=data[2], value='\u200b')
-                     .set_footer(text=f"Page {page-1}/6" if payload.emoji.name == "◀️" else f"Page {page+1}/6"))
+            embed = (Embed(title=f":white_sun_small_cloud: {next_day[0]} - Météo à {city}:", 
+                           description='\n'.join(forecast[next_day[1]]), 
+                           color=0x3498db)
+                     .set_footer(text=f"Page {next_page}/6 • {city} • {next_day[0]}"))
+
+        await reaction.remove(user)
         await message.edit(embed=embed)
 
 
