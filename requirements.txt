@@ -1,6 +1,7 @@
 discord.py==1.5.0
 wheel
 ffmpeg
+youtube-dl
 pafy
 PyNaCl
 requests
