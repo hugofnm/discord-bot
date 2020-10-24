@@ -2,16 +2,16 @@ from discord import Embed, FFmpegPCMAudio
 from discord.ext import commands
 from discord.utils import get
 
-from youtube_dl import YoutubeDL
 from asyncio import run_coroutine_threadsafe
-import requests
+from tools.tools import get_json, is_url
+from re import findall
+from pafy import new
 
 
 class Music(commands.Cog, name='Musique'):
     """
     Module permettant d'écouter des vidéos.
     """
-    YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist':'True'}
     FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
 
     def __init__(self, bot):
@@ -20,27 +20,20 @@ class Music(commands.Cog, name='Musique'):
         self.message = {}
 
     @staticmethod
-    def parse_duration(duration):
-        result = []
-        m, s = divmod(duration, 60)
-        h, m = divmod(m, 60)
-        return f'{h:d}:{m:02d}:{s:02d}'
+    async def search(author, arg):
+        url = arg if is_url(arg) else f'https://www.youtube.com/results?search_query={arg}'
+        resp = await get_json(url, json=False)
+        video_id = findall(r"watch\?v=(\S{11})", resp)[0]
+        video = new(video_id)
 
-    @staticmethod
-    def search(author, arg):
-        with YoutubeDL(Music.YDL_OPTIONS) as ydl:
-            try: requests.get(arg)
-            except: info = ydl.extract_info(f"ytsearch:{arg}", download=False)['entries'][0]
-            else: info = ydl.extract_info(arg, download=False)
-
-        embed = (Embed(title='🎵 Vidéo en cours:', description=f"[{info['title']}]({info['webpage_url']})", color=0x3498db)
-                .add_field(name='Durée', value=Music.parse_duration(info['duration']))
+        embed = (Embed(title='🎵 Vidéo en cours:', description=f"[{video.title}](https://www.youtube.com/watch?v={video_id})", color=0x3498db)
+                .add_field(name='Durée', value=video.duration)
                 .add_field(name='Demandée par', value=author)
-                .add_field(name='Chaine', value=f"[{info['uploader']}]({info['channel_url']})")
+                .add_field(name='Chaine', value=video.author)
                 .add_field(name="File d'attente", value=f"Pas de vidéos en attente")
-                .set_thumbnail(url=info['thumbnail']))
+                .set_thumbnail(url=video.thumb))
 
-        return {'embed': embed, 'source': info['formats'][0]['url'], 'title': info['title']}
+        return {'embed': embed, 'source': video.getbestaudio().url, 'title': video.title}
 
     async def edit_message(self, ctx):
         embed = self.song_queue[ctx.guild][0]['embed']
@@ -63,7 +56,7 @@ class Music(commands.Cog, name='Musique'):
     async def play(self, ctx, *, video: str):
         channel = ctx.author.voice.channel
         voice = get(self.bot.voice_clients, guild=ctx.guild)
-        song = Music.search(ctx.author.mention, video)
+        song = await Music.search(ctx.author.mention, video)
 
         if voice and voice.is_connected():
             await voice.move_to(channel)
